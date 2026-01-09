@@ -5,7 +5,7 @@
 1. [Introduction](#introduction)
 2. [Incident scenario](#scenario)
 3. [Objective](#objective)
-4. [Cybersecurity incident report](#report)
+4. [Analyze network attack](#report)
 5. [Conclusion](#conclusion)
 
 ---
@@ -30,7 +30,7 @@ Langkah awal yang diambil adalah mematikan server web sementara agar sistem kemb
 
 Berikut adalah log TCP dan HTTP yang direkam menggunakan Wireshark:
 
-<img width="1077" height="2751" alt="image" src="https://github.com/user-attachments/assets/ea23fe59-4463-4385-8a61-1c57eadc53d6" />
+<img width="824" height="1890" alt="image" src="https://github.com/user-attachments/assets/65f6341f-486d-41c5-ab11-8640dd2aac93" />
 
 ---
 
@@ -47,17 +47,22 @@ Tujuan analisis meliputi:
 
 ---
 
-## 📋 Cybersecurity incident report <a name="report">
+## 📋 Analyze network attack <a name="report">
 
-### Analyze network attack
+### Bagian 1: Identifikasi jenis serangan
 
-|Bagian 1: Identifikasi jenis serangan|
-|---|
-|Hasil pengamatan lalu lintas jaringan menunjukkan bahwa gangguan akses website yang ditandai dengan pesan connection timeout mengarah pada serangan Denial of Service (DoS). Trafik memperlihatkan lonjakan permintaan TCP SYN dalam jumlah besar yang datang dari alamat IP tidak dikenal dalam waktu singkat. Permintaan koneksi tersebut tidak pernah diselesaikan melalui proses TCP secara normal. Server web terus menerima paket SYN tanpa adanya penyelesaian koneksi hingga tahap akhir, sehingga resource server terkuras. Pola ini sesuai dengan karakteristik serangan SYN Flood, di mana server dibanjiri permintaan koneksi palsu untuk mengganggu ketersediaan layanan.
+Hasil pengamatan lalu lintas jaringan menunjukkan bahwa gangguan akses website yang ditandai dengan pesan connection timeout mengarah pada serangan Denial of Service (DoS). Trafik memperlihatkan lonjakan permintaan TCP SYN dalam jumlah besar yang datang dari alamat IP tidak dikenal dalam waktu singkat.
 
-|Bagian 2: Cara serangan menyebabkan gangguan website|
-|---|
-|Akses ke server web pada kondisi normal selalu diawali dengan proses TCP three-way handshake. Client mengirim paket SYN sebagai permintaan koneksi. Server membalas dengan SYN-ACK sebagai tanda persetujuan dan menyiapkan resource. Client kemudian mengirim ACK untuk menyelesaikan koneksi. Serangan SYN Flood terjadi saat penyerang mengirim paket SYN dalam jumlah besar tanpa melanjutkan proses handshake hingga selesai. Server tetap merespons setiap permintaan tersebut dengan menyediakan resource, meskipun koneksi tidak pernah terbentuk sepenuhnya. Kapasitas server pun cepat habis dan tidak mampu melayani koneksi baru. Log jaringan menunjukkan server web akhirnya gagal merespons permintaan dari pengguna yang sah. Koneksi tidak pernah terbentuk dengan baik dan pengguna menerima pesan connection timeout saat mengakses website. Kondisi ini berdampak langsung pada ketersediaan layanan dan menghambat aktivitas operasional yang bergantung pada website.|
+Permintaan koneksi tersebut tidak pernah diselesaikan melalui proses TCP secara normal. Server web terus menerima paket SYN tanpa adanya penyelesaian koneksi hingga tahap akhir, sehingga resource server terkuras. Pola ini sesuai dengan karakteristik serangan SYN Flood, di mana server dibanjiri permintaan koneksi palsu untuk mengganggu ketersediaan layanan.
+
+### Bagian 2: Cara serangan menyebabkan gangguan website
+
+Akses ke server web pada kondisi normal selalu diawali dengan proses TCP three-way handshake. Client mengirim paket SYN sebagai permintaan koneksi. Server membalas dengan SYN-ACK sebagai tanda persetujuan dan menyiapkan resource. Client kemudian mengirim ACK untuk menyelesaikan koneksi.
+- Serangan SYN Flood terjadi saat penyerang mengirim paket SYN dalam jumlah besar tanpa melanjutkan proses handshake hingga selesai.
+- Server tetap merespons setiap permintaan tersebut dengan menyediakan resource, meskipun koneksi tidak pernah terbentuk sepenuhnya.
+- Kapasitas server pun cepat habis dan tidak mampu melayani koneksi baru.
+
+Log jaringan menunjukkan server web akhirnya gagal merespons permintaan dari pengguna yang sah. Koneksi tidak pernah terbentuk dengan baik dan pengguna menerima pesan connection timeout saat mengakses website. Kondisi ini berdampak langsung pada ketersediaan layanan dan menghambat aktivitas operasional yang bergantung pada website.
 
 ---
 
