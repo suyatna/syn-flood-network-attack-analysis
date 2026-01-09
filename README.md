@@ -1,4 +1,4 @@
-# SYN flood attack analysis
+# TCP SYN flood attack analysis
 
 ## 📑 Table of contents
 
