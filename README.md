@@ -5,7 +5,7 @@
 1. [Introduction](#introduction)
 2. [Incident scenario](#scenario)
 3. [Objective](#objective)
-4. [Analyze network attack](#report)
+4. [Cybersecurity incident report](#report)
 5. [Conclusion](#conclusion)
 
 ---
@@ -30,18 +30,7 @@ Langkah awal yang diambil adalah mematikan server web sementara agar sistem kemb
 
 Berikut adalah log TCP dan HTTP yang direkam menggunakan Wireshark:
 
-|No.|Time|Source|Destination|Protocol|Info|
-|---|---|---|---|---|---|
-|47|3.144521|198.51.100.23|192.0.2.1|TCP|42584->443 [SYN] Seq=0 Win-5792 Len=120...|
-|48|3.195755|198.51.100.24|198.51.100.23|TCP|443->42584 [SYN, ACK] Seq=0 Win-5792 Len=120...|
-|49|3.246989|198.51.100.25|192.0.2.1|TCP|42584->443 [ACK] Seq=1 Win-5792 Len=120...|
-|50|3.298223|198.51.100.26|192.0.2.1|HTTP|GET  /sales.html HTTP/1.1|
-|51|3.349457|198.51.100.27|198.51.100.23|HTTP|HTTP/1.1 200 OK (text/html)|
-|52|3.390692|198.51.100.28|192.0.2.1|TCP|54770->443 [SYN] Seq=0 Win=5792 Len=0...|
-|53|3.441926|198.51.100.29|203.0.113.0|TCP|443->54770 [SYN, ACK] Seq=0 Win-5792 Len=120...|
-|54|3.49316|198.51.100.30|192.0.2.1|TCP|54770->443 [ACK Seq=1 Win=5792 Len=0...|
-|...|...|...|...|...|...|
-|73|6.230548|192.0.2.1|198.51.100.16|TCP|443->32641 [RST, ACK] Seq=0 Win-5792 Len=120...|
+<img width="1077" height="2751" alt="image" src="https://github.com/user-attachments/assets/ea23fe59-4463-4385-8a61-1c57eadc53d6" />
 
 ---
 
@@ -58,17 +47,25 @@ Tujuan analisis meliputi:
 
 ---
 
-## 📋 Analyze network attack <a name="report">
+## 📋 Cybersecurity incident report <a name="report">
 
-|Section 1: Identify the type of attack|Section 2: Explain how the attack causes the website malfunction|
-|---|---|
-|Hasil analisis lalu lintas jaringan dari log Wireshark menunjukkan bahwa gangguan akses website yang ditandai dengan pesan connection timeout mengarah pada serangan Denial of Service (DoS). Pola trafik memperlihatkan server web menerima lonjakan permintaan TCP SYN dalam jumlah tidak normal dari alamat IP yang tidak dikenal. Permintaan SYN tersebut dikirim secara terus-menerus dalam waktu singkat hingga server tidak lagi mampu menangani koneksi baru. Pola ini sesuai dengan karakteristik serangan SYN Flood, salah satu jenis DoS attack yang menargetkan proses awal pembentukan koneksi TCP pada server.|Pada kondisi normal, koneksi ke server web dimulai melalui proses TCP three-way handshake. Proses ini melibatkan pengiriman paket SYN dari client, balasan SYN-ACK dari server, dan ACK terakhir untuk menyelesaikan koneksi. Pada serangan SYN Flood, pelaku membanjiri server dengan paket SYN tanpa pernah menyelesaikan proses handshake. Server tetap merespons setiap permintaan dan mengalokasikan resource untuk koneksi yang tidak pernah selesai. Kondisi ini membuat resource server cepat habis dan tidak tersedia bagi pengguna yang sah. Log Wireshark menunjukkan server web kewalahan menghadapi tingginya jumlah permintaan SYN dan gagal merespons koneksi normal. Situasi ini menyebabkan koneksi tidak pernah terbentuk dengan sempurna, sehingga pengunjung website dan karyawan perusahaan mengalami connection timeout saat mencoba mengakses situs.|
+### Analyze network attack
+
+|Bagian 1: Identifikasi jenis serangan|
+|---|
+|Hasil pengamatan lalu lintas jaringan menunjukkan bahwa gangguan akses website yang ditandai dengan pesan connection timeout mengarah pada serangan Denial of Service (DoS). Trafik memperlihatkan lonjakan permintaan TCP SYN dalam jumlah besar yang datang dari alamat IP tidak dikenal dalam waktu singkat. Permintaan koneksi tersebut tidak pernah diselesaikan melalui proses TCP secara normal. Server web terus menerima paket SYN tanpa adanya penyelesaian koneksi hingga tahap akhir, sehingga resource server terkuras. Pola ini sesuai dengan karakteristik serangan SYN Flood, di mana server dibanjiri permintaan koneksi palsu untuk mengganggu ketersediaan layanan.
+
+|Bagian 2: Cara serangan menyebabkan gangguan website|
+|---|
+|Akses ke server web pada kondisi normal selalu diawali dengan proses TCP three-way handshake. Client mengirim paket SYN sebagai permintaan koneksi. Server membalas dengan SYN-ACK sebagai tanda persetujuan dan menyiapkan resource. Client kemudian mengirim ACK untuk menyelesaikan koneksi. Serangan SYN Flood terjadi saat penyerang mengirim paket SYN dalam jumlah besar tanpa melanjutkan proses handshake hingga selesai. Server tetap merespons setiap permintaan tersebut dengan menyediakan resource, meskipun koneksi tidak pernah terbentuk sepenuhnya. Kapasitas server pun cepat habis dan tidak mampu melayani koneksi baru. Log jaringan menunjukkan server web akhirnya gagal merespons permintaan dari pengguna yang sah. Koneksi tidak pernah terbentuk dengan baik dan pengguna menerima pesan connection timeout saat mengakses website. Kondisi ini berdampak langsung pada ketersediaan layanan dan menghambat aktivitas operasional yang bergantung pada website.|
 
 ---
 
 ## 🏁 Conclusion <a name="conclusion">
 
-Hasil analisis lalu lintas jaringan menunjukkan bahwa gangguan akses website dipicu oleh serangan Denial of Service dengan metode SYN Flood. Server web dibanjiri permintaan SYN dalam jumlah besar hingga proses pembentukan koneksi TCP terganggu. Kondisi ini membuat resource server cepat habis dan tidak mampu melayani koneksi dari pengguna yang sah.
+Hasil analisis lalu lintas jaringan menunjukkan bahwa gangguan akses website dipicu oleh serangan SYN Flood yang termasuk dalam kategori Denial of Service (DoS). Serangan ini terlihat dari lonjakan permintaan TCP SYN dalam jumlah tidak wajar yang datang dari alamat IP tidak dikenal, hingga server web kewalahan dan tidak mampu membangun koneksi dengan pengguna yang sah.
 
-Insiden ini memperlihatkan bahwa lonjakan trafik yang tidak wajar dapat langsung memengaruhi ketersediaan layanan web dan aktivitas kerja karyawan. Pemahaman terhadap pola serangan melalui analisis trafik jaringan membantu mengidentifikasi jenis serangan beserta dampaknya. Temuan ini menjadi dasar bagi organisasi untuk memperkuat keamanan jaringan dan mencegah kejadian serupa di kemudian hari.
+Dampaknya terasa langsung pada ketersediaan layanan website. Resource server terkuras untuk menangani permintaan koneksi palsu, sehingga koneksi yang sah tidak pernah terbentuk dan berakhir dengan pesan connection timeout. Kondisi ini menghambat aktivitas karyawan dan pelanggan yang bergantung pada website, sekaligus menurunkan keandalan layanan perusahaan.
+
+Studi kasus ini menegaskan pentingnya pemantauan lalu lintas jaringan dan kemampuan mengenali pola serangan sejak awal. Pemahaman terhadap karakteristik serangan SYN Flood membantu organisasi menyiapkan langkah pencegahan yang lebih tepat, seperti mitigasi serangan dan penguatan kontrol keamanan jaringan, agar risiko gangguan serupa dapat ditekan di masa mendatang.
 
