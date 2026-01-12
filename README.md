@@ -64,6 +64,8 @@ Log jaringan menunjukkan server web akhirnya gagal merespons permintaan dari pen
 
 ## 🏁 Conclusion <a name="conclusion">
 
-Hasil analisis lalu lintas jaringan menunjukkan bahwa gangguan akses website dipicu oleh serangan Denial of Service (DoS) dengan metode SYN flood. Server web dibanjiri permintaan SYN dalam jumlah besar hingga proses pembentukan koneksi TCP terganggu. Kondisi ini membuat resource server cepat habis dan tidak mampu melayani koneksi dari pengguna yang sah.
+Hasil analisis lalu lintas jaringan menunjukkan bahwa gangguan akses website disebabkan oleh serangan TCP SYN flood yang termasuk dalam kategori Denial of Service (DoS). Serangan ini terlihat dari lonjakan permintaan TCP SYN dalam jumlah tidak wajar yang datang dari alamat IP tidak dikenal, sehingga server web kewalahan dan gagal menyelesaikan proses koneksi dengan pengguna yang sah.
 
-Insiden ini memperlihatkan bahwa lonjakan trafik yang tidak wajar dapat langsung memengaruhi ketersediaan layanan web dan aktivitas kerja karyawan. Pemahaman terhadap pola serangan melalui analisis trafik jaringan membantu mengidentifikasi jenis serangan beserta dampaknya. Temuan ini menjadi dasar bagi organisasi untuk memperkuat keamanan jaringan dan mencegah kejadian serupa di kemudian hari.
+Dampak serangan ini langsung terasa pada ketersediaan layanan website. Sumber daya server terkuras untuk menangani permintaan koneksi palsu, membuat koneksi baru tidak pernah terbentuk dengan sempurna. Kondisi ini memicu pesan connection timeout yang dialami karyawan dan pelanggan, serta mengganggu aktivitas bisnis yang bergantung pada akses website.
+
+Studi kasus ini menegaskan pentingnya pemantauan lalu lintas jaringan dan kemampuan mengenali pola serangan sejak awal. Pemahaman terhadap karakteristik SYN flood dan dampaknya membantu organisasi mengambil langkah pencegahan yang lebih tepat, seperti penerapan mekanisme mitigasi serangan dan penguatan kontrol keamanan jaringan, agar risiko gangguan serupa dapat ditekan di kemudian hari.
