@@ -64,6 +64,10 @@ Log jaringan menunjukkan server web akhirnya gagal merespons permintaan dari pen
 
 ## 💡 Insights and lessons learned <a name="insight">
 
-Studi kasus ini menggambarkan bagaimana serangan SYN flood dapat langsung memengaruhi ketersediaan layanan web tanpa harus menyerang celah aplikasi. Pola trafik yang dipenuhi paket SYN tanpa penyelesaian three-way handshake menjadi sinyal jelas adanya upaya Denial of Service (DoS). Analisis lalu lintas jaringan menunjukkan bahwa serangan memanfaatkan keterbatasan server dalam menangani koneksi setengah terbuka atau half-open connections. Penumpukan koneksi tersebut membuat server kehabisan sumber daya dan gagal merespons permintaan dari pengguna yang sah. Layanan pun terasa lambat atau bahkan tidak bisa diakses sama sekali.
+Studi kasus ini menggambarkan bagaimana serangan SYN flood dapat langsung memengaruhi ketersediaan layanan web tanpa harus menyerang celah aplikasi. Pola trafik yang dipenuhi paket SYN tanpa penyelesaian three-way handshake menjadi sinyal jelas adanya upaya Denial of Service (DoS).
 
-Kasus ini memperlihatkan peran penting network monitoring dan log analysis sebagai langkah awal mendeteksi serangan berbasis trafik. Pemahaman terhadap pola TCP yang normal dan menyimpang membantu insiden dikenali lebih cepat sebelum dampaknya meluas ke sistem lain. Gambaran keseluruhan dari analisis ini menegaskan bahwa serangan terhadap aspek availability tidak selalu rumit. Dampaknya bisa sangat besar jika tidak diantisipasi dengan mitigasi yang tepat, seperti konfigurasi firewall yang baik, penerapan rate limiting, dan penggunaan sistem deteksi intrusi.
+Analisis lalu lintas jaringan menunjukkan bahwa serangan memanfaatkan keterbatasan server dalam menangani koneksi setengah terbuka atau half-open connections. Penumpukan koneksi tersebut membuat server kehabisan sumber daya dan gagal merespons permintaan dari pengguna yang sah. Layanan pun terasa lambat atau bahkan tidak bisa diakses sama sekali.
+
+Kasus ini memperlihatkan peran penting network monitoring dan log analysis sebagai langkah awal mendeteksi serangan berbasis trafik. Pemahaman terhadap pola TCP yang normal dan menyimpang membantu insiden dikenali lebih cepat sebelum dampaknya meluas ke sistem lain.
+
+Gambaran keseluruhan dari analisis ini menegaskan bahwa serangan terhadap aspek availability tidak selalu rumit. Dampaknya bisa sangat besar jika tidak diantisipasi dengan mitigasi yang tepat, seperti konfigurasi firewall yang baik, penerapan rate limiting, dan penggunaan sistem deteksi intrusi.
